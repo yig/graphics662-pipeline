@@ -70,6 +70,9 @@ void Mesh::computeNormals( MeshNormalStrategy strategy ) {
 mat4 Mesh::normalizingTransformation() const {
     // Your code goes here.
     
+    // The identity matrix.
+    // return mat4(1.0);
+    
     // If there are no positions, return the identity.
     if( positions.empty() ) {
         return mat4(1.0);

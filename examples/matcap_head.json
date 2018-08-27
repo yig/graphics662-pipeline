@@ -3,7 +3,7 @@
     "TimerMilliseconds": 16,
     
     "shaders": {
-        "vertex": [ "phong.vs" ],
+        "vertex": [ "pbr.vs" ],
         "fragment": [ "matcap.fs" ]
     },
     

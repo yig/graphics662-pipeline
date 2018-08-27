@@ -1,6 +1,7 @@
 #include "animation.h"
 
 #include <glm/ext/matrix_transform.hpp> // translate, rotate, scale
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/matrix_interpolation.hpp> // axisAngleMatrix
 
 using namespace glm;

@@ -1,6 +1,8 @@
 # TODO
 ## Code changes and examples that would benefit the framework
 
+- deferred shader model. multiple outputs. can be boring passthrough for many shaders.
+
 + Flag to launch, save a screenshot, and quit.
 + Autograder
 + "Your code goes here" in different files.

@@ -1,0 +1,83 @@
+{
+    "PipelineGUI": "FancyScene",
+    "TimerMilliseconds": 33,
+    
+    "shaders": {
+        "vertex": [ "pbr.vs" ],
+        "fragment": [ "pbr.fs" ]
+    },
+    
+    "uniforms": {
+        "material.base_color": { "type": "3f", "value": [ 1.00, 1.0, 1.0 ] },
+        "material.metallic": { "type": "1f", "value": 1.0 },
+        "material.perceptual_roughness": { "type": "1f", "value": 1.0 },
+        "material.reflectance": { "type": "1f", "value": 0.5 },
+        
+        "material.use_base_color_map": { "type": "1i", "value": 1 },
+        "material.base_color_map": { "type": "texture", "value": "baseColor" },
+        
+        "material.use_metallic_roughness_map": { "type": "1i", "value": 1 },
+        "material.metallic_roughness_map": { "type": "texture", "value": "occlusionMetallicRoughness" },
+        
+        "material.use_normal_map": { "type": "1i", "value": 1 },
+        "material.normal_map": { "type": "texture", "value": "normal" },
+        
+        "material.use_emissive_map": { "type": "1i", "value": 1 },
+        "material.emissive_map": { "type": "texture", "value": "emissive" },
+        
+        "material.use_occlusion_map": { "type": "1i", "value": 1 },
+        "material.occlusion_map": { "type": "texture", "value": "occlusionMetallicRoughness" },
+        
+        "num_samples_diffuse": { "type": "1i", "value": 0 },
+        "num_samples_specular": { "type": "1i", "value": 0 },
+        
+        "environment_map": { "type": "texture", "value": "hotel" },
+        "use_environment_map": { "type": "1i", "value": 1 },
+        
+        "num_lights": { "type": "1i", "value": 0 },
+        
+        "lights[0].color": { "type": "3f", "value": [ 1.0, 1.0, 1.0 ] },
+        "lights[0].direction": { "type": "3f", "value": [ 1.0, -1.0, -1.0 ] },
+        
+        "lights[1].color": { "type": "3f", "value": [ 0.7, 0.7, 0.7 ] },
+        "lights[1].direction": { "type": "3f", "value": [ 0.0, 0.0, -1.0 ] },
+        
+        "lights[2].color": { "type": "3f", "value": [ 1.0, 1.0, 1.0 ] },
+        "lights[2].direction": { "type": "3f", "value": [ 0.0, -1.0, 0.0 ] }
+    },
+    
+    "mesh": "pbr/boombox/BoomBox.obj",
+    
+    "textures": {
+        "baseColor": "pbr/boombox/BoomBox_baseColor.png",
+        "emissive": "pbr/boombox/BoomBox_emissive.png",
+        "occlusionMetallicRoughness": "pbr/boombox/BoomBox_occlusionRoughnessMetallic.png",
+        "normal": "pbr/boombox/BoomBox_normal.png",
+        "yokohama": [
+            "yokohama/posx.jpg",
+            "yokohama/negx.jpg",
+            "yokohama/posy.jpg",
+            "yokohama/negy.jpg",
+            "yokohama/posz.jpg",
+            "yokohama/negz.jpg"
+            ],
+        "room": [
+            "skybox/room/px.png",
+            "skybox/room/nx.png",
+            "skybox/room/py.png",
+            "skybox/room/ny.png",
+            "skybox/room/pz.png",
+            "skybox/room/nz.png"
+            ],
+        "hotel": [
+            "skybox/hotel/px.png",
+            "skybox/hotel/nx.png",
+            "skybox/hotel/py.png",
+            "skybox/hotel/ny.png",
+            "skybox/hotel/pz.png",
+            "skybox/hotel/nz.png"
+            ]
+    },
+    
+    "ClearColor": [ 0.5, 0.5, 0.5, 1.0 ]
+}

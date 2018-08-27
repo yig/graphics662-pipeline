@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.14...3.30)
 
 project(pipeline LANGUAGES CXX C)
 
@@ -16,10 +16,10 @@ include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
     glfw3
-    # URL https://github.com/glfw/glfw/releases/download/3.3.8/glfw-3.3.8.zip
-    # URL_HASH SHA256=4d025083cc4a3dd1f91ab9b9ba4f5807193823e565a5bcf4be202669d9911ea6
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG 3.3-stable
+    # GIT_REPOSITORY https://github.com/glfw/glfw.git
+    # GIT_TAG 3.4
+    URL https://github.com/glfw/glfw/archive/refs/tags/3.4.zip
+    URL_HASH SHA256=a133ddc3d3c66143eba9035621db8e0bcf34dba1ee9514a9e23e96afd39fd57a
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     )
@@ -28,10 +28,13 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable( glfw3 )
+
 FetchContent_Declare(
     glm
-    GIT_REPOSITORY https://github.com/g-truc/glm.git
-    GIT_TAG 0.9.9.8
+    # GIT_REPOSITORY https://github.com/g-truc/glm.git
+    # GIT_TAG 1.0.1
+    URL https://github.com/g-truc/glm/archive/refs/tags/1.0.1.zip
+    URL_HASH SHA256=09c5716296787e1f7fcb87b1cbdbf26814ec1288ed6259ccd30d5d9795809fa5
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     )
@@ -107,23 +110,22 @@ set(EXAMPLES "${PROJECT_SOURCE_DIR}/examples")
 
 # A CMake target to create the desired outputs
 add_custom_target(screenshots
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/phong_bunny.png" "${EXAMPLES}/phong_bunny.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/phong_bunny-reflective.png" "${EXAMPLES}/phong_bunny-reflective.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/phong_bunny-refractive.png" "${EXAMPLES}/phong_bunny-refractive.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/phong_sphere.png" "${EXAMPLES}/phong_sphere.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/cel_bunny.png" "${EXAMPLES}/cel_bunny.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/cel_sphere.png" "${EXAMPLES}/cel_sphere.json"
     COMMAND pipeline --screenshot "${SCREENSHOTS}/matcap_bunny.png" "${EXAMPLES}/matcap_bunny.json"
     COMMAND pipeline --screenshot "${SCREENSHOTS}/matcap_head.png" "${EXAMPLES}/matcap_head.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/matcap_hercules.png" "${EXAMPLES}/matcap_hercules.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/matcap_lemon.png" "${EXAMPLES}/matcap_lemon.json"
     COMMAND pipeline --screenshot "${SCREENSHOTS}/matcap_sphere.png" "${EXAMPLES}/matcap_sphere.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/normalmap_cube.png" "${EXAMPLES}/normalmap_cube.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/normalmap_head.png" "${EXAMPLES}/normalmap_head.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/normalmap_lemon.png" "${EXAMPLES}/normalmap_lemon.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/normalmap_hercules_bronze.png" "${EXAMPLES}/normalmap_hercules_bronze.json"
-    COMMAND pipeline --screenshot "${SCREENSHOTS}/normalmap_hercules_marble.png" "${EXAMPLES}/normalmap_hercules_marble.json"
-    
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_boombox-nonormals-direct.png" "${EXAMPLES}/pbr_boombox-nonormals-direct.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_boombox-nonormals-sampled.png" "${EXAMPLES}/pbr_boombox-nonormals-sampled.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_boombox-normals-direct.png" "${EXAMPLES}/pbr_boombox-normals-direct.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_boombox-normals-sampled.png" "${EXAMPLES}/pbr_boombox-normals-sampled.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_bunny.png" "${EXAMPLES}/pbr_bunny.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_cube2.png" "${EXAMPLES}/pbr_cube2.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_earth.png" "${EXAMPLES}/pbr_earth.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_robot.png" "${EXAMPLES}/pbr_robot.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_sphere-dielectric-direct-lights.png" "${EXAMPLES}/pbr_sphere-dielectric-direct-lights.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_sphere-dielectric-direct.png" "${EXAMPLES}/pbr_sphere-dielectric-direct.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_sphere-dielectric-sampled.png" "${EXAMPLES}/pbr_sphere-dielectric-sampled.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_sphere-metal-direct.png" "${EXAMPLES}/pbr_sphere-metal-direct.json"
+    COMMAND pipeline --screenshot "${SCREENSHOTS}/pbr_sphere-metal-sampled.png" "${EXAMPLES}/pbr_sphere-metal-sampled.json"
     WORKING_DIRECTORY "${OUTPUT}"
     VERBATIM
     )

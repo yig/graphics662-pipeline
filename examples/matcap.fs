@@ -8,8 +8,8 @@ in vec2 fTexCoord;
 uniform struct Material {
     sampler2D matcap_texture;
     
-    bool use_diffuse_texture;
-    sampler2D diffuse_texture;
+    bool use_base_color_map;
+    sampler2D base_color_map;
     
     bool use_normal_map;
     sampler2D normal_map;

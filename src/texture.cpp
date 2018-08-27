@@ -92,16 +92,19 @@ void Texture2D::reload()
     // Set common parameters.
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0 );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL,  0 );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+    // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0 );
+    // glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL,  0 );
     
     // Upload data.
     // TODO: If we know that the new and old data are the same size, we could use glTexSubImage2D();
     const auto width_height = upload_image( GL_TEXTURE_2D, m_image_path, true );
     width = width_height.first;
     height = width_height.second;
+    
+    // Create a mipmap
+    glGenerateMipmap( GL_TEXTURE_2D );
 }
 void Texture2D::bind()
 {
@@ -128,10 +131,10 @@ void TextureCube::reload()
     glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
     glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
     glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0 );
-    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL,  0 );
+    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+    glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+    // glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0 );
+    // glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL,  0 );
     
     // Upload data for the six faces.
     // TODO: If we know that the new and old data are the same size, we could use glTexSubImage2D();
@@ -141,6 +144,9 @@ void TextureCube::reload()
     upload_image( GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, m_image_path_y_minus );
     upload_image( GL_TEXTURE_CUBE_MAP_POSITIVE_Z, m_image_path_z_plus );
     upload_image( GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, m_image_path_z_minus );
+    
+    // Create a mipmap
+    glGenerateMipmap( GL_TEXTURE_CUBE_MAP );
 }
 void TextureCube::bind()
 {

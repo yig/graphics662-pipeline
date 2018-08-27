@@ -3,14 +3,14 @@
     "TimerMilliseconds": 16,
     
     "shaders": {
-        "vertex": [ "phong.vs" ],
+        "vertex": [ "pbr.vs" ],
         "fragment": [ "matcap.fs" ]
     },
     
     "uniforms": {
-        "matcap_texture": { "type": "texture", "value": "rbplastic" },
+        "material.matcap_texture": { "type": "texture", "value": "rbplastic" },
 
-        "material.use_diffuse_texture": { "type": "1i", "value": 0 },
+        "material.use_base_color_map": { "type": "1i", "value": 0 },
         "material.use_normal_map": { "type": "1i", "value": 0 }
     },
     
