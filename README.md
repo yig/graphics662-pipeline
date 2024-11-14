@@ -152,19 +152,13 @@ shader. For bonus, you can also write additional shaders and write
 OpenGL code to setup a different rendering pipeline. Your output will
 look like this:
 
-![phong_bunny.json without refraction](docs/images/phong_bunny_norefract.jpg)
-![phong_bunny.json with refraction](docs/images/phong_bunny_refract.jpg)
-![phong_sphere.json](docs/images/phong_sphere.jpg)
-![cel_bunny.json](docs/images/cel_bunny.jpg)
-![cel_sphere.json](docs/images/cel_sphere.jpg)
-![matcap_head.json](docs/images/matcap_head.jpg)
-![matcap_hercules.json](docs/images/matcap_hercules.jpg)
-![matcap_lemon.json](docs/images/matcap_lemon.jpg)
-![normalmap_cube.json](docs/images/normalmap_cube.jpg)
-![normalmap_head.json](docs/images/normalmap_head.jpg)
-![normalmap_hercules_bronze.json](docs/images/normalmap_hercules_bronze.jpg)
-![normalmap_hercules_marble.json](docs/images/normalmap_hercules_marble.jpg)
-![normalmap_lemon.json](docs/images/normalmap_lemon.jpg)
+![PBR robot](screenshots/pbr_robot.png)
+![PBR earth](screenshots/pbr_earth.png)
+![PBR bunny](screenshots/pbr_bunny.png)
+![PBR boombox](screenshots/pbr_boombox-normals-direct.png)
+![MatCap bunny](screenshots/matcap_bunny.png)
+![MatCap head](screenshots/matcap_head.png)
+![MatCap sphere](screenshots/matcap_sphere.png)
 
 Rubric:
 -------
