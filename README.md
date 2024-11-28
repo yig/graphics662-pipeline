@@ -167,7 +167,7 @@ Rubric:
 
 Our goal is to evaluate the rendering equation to obtain the outgoing radiance $L$ along rays from a surface point $\mathrm{p}$ in the direction $\omega _ o$ of a pixel:
 
-$$L _ o(\mathrm{p}, \omega _ o) = L _ e(\mathrm{p}, \omega _ o) + \int _ {H^2} f(\mathrm{p}, \omega _ i \rightarrow \omega _ o) \, L _ i(\mathrm{p}, \omega _ i) \, \cos \theta _ i \, \mathrm{d}\omega _ i$$
+$$L _ o(\mathrm{p}, \omega _ o) = L _ e(\mathrm{p}, \omega _ o) + \int _ {H^2} f(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i(\mathrm{p}, \omega _ i) \cos \theta _ i \ \mathrm{d}\omega _ i$$
 
 Rasterization will give us a chance to evaluate this integral at each point $\mathrm{p}$ that is visible from our camera at a pixel. In eye-space (sometimes called camera-space or view-space), the camera is located at the origin, so we can trivially obtain the outgoing direction $\omega _ o$. (In shaders, $\omega _ o$ is often called $v$ as in *view direction*. It points away from $\mathrm{p}$.) The $L _ e(\mathrm{p}, \omega _ o)$ term corresponds to any light emission directly from the surface. The integral is more challenging. We have to consider all possible directions $\omega _ i$ along which light $L _ i$ could travel to the point $\mathrm{p}$. (In shaders, $\omega _ i$ is often called $l$ as in *light direction*. It points away from $\mathrm{p}$.) We attenuate the light $L _ i$ arriving at $\mathrm{p}$ by the projected area of $\omega _ i$ onto the surface at $\mathrm{p}$. (If $n$ is the surface normal at $\mathrm{p}$, this attenuation factor is $n \cdot l$.) We attenuate the light leaving $\mathrm{p}$ by the BRDF (bidirectional reflectance function) $f$. The physically-based aspect of our calculations will be in the BRDF, which will model real-world materials. We will follow [Filament](https://google.github.io/filament/Filament.md.html#materialsystem)'s material formulas, which is to say a microfacet surface model. Our BRDF $f$ will be the sum of a Lambertian diffuse term $f _ d$ and a Cook-Torrance specular term $f _ r$. The diffuse term is easy to write: $f _ d = \frac{\sigma}{\pi}$, where $\sigma$ is the diffuse color of the surface. The specular term is more complex. The [Filament documentation](https://google.github.io/filament/Filament.md.html#materialsystem/standardmodelsummary) provides the following GLSL code:
 
@@ -247,11 +247,11 @@ You should support an ambient occlusion map, which stores the amount of self-sha
 
 [Directional lights](https://google.github.io/filament/Filament.md.html#lighting/directlighting/directionallights) are a convenient special case of the integral. These lights contribute light only along a given direction, so we can skip summing over all possible directions and simply iterate over the light directions. In other words, we get to replace:
 
-$$\int _ {H^2} f(\mathrm{p}, \omega _ i \rightarrow \omega _ o) \, L _ i(\mathrm{p}, \omega _ i) \, \cos \theta _ i \, \mathrm{d}\omega _ i$$
+$$\int _ {H^2} f(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i(\mathrm{p}, \omega _ i) \cos \theta _ i \ \mathrm{d}\omega _ i$$
 
 with
 
-$$\sum _ {i=1} ^ {N} f(\mathrm{p}, \omega _ i \rightarrow \omega _ o) \, L _ i \, \cos \theta _ i$$
+$$\sum _ {i=1} ^ {N} f(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i \cos \theta _ i$$
 
 where the incident radiance $L _ i =$ `lights[i].color`, the direction towards the light $\omega _ i =$ `-lights[k].direction`, $\cos \theta _ i = n \cdot \omega _ i$, and $N =$ `num_lights`.
 
@@ -269,21 +269,21 @@ The mipmaps of a texture are its image pyramid: the sequence of images obtained 
 
 With our mipmap approximation, we can replace the integral over the diffuse component of the rendering equation:
 
-$$\int _ {H^2} f _ d(\mathrm{p}, \omega _ i \rightarrow \omega _ o) \, L _ i(\mathrm{p}, \omega _ i) \, \cos \theta _ i \, \mathrm{d}\omega _ i$$
+$$\int _ {H^2} f _ d(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i(\mathrm{p}, \omega _ i) \cos \theta _ i \ \mathrm{d}\omega _ i$$
 
 with a direct lookup:
 
-$$\pi \, f _ d \, I(n)$$
+$$\pi f _ d I(n)$$
 
 where $f _ d = \frac{\mathrm{diffuseColor}}{\pi}$, $I(n) = \mathrm{textureLod}( \mathrm{environment\_map}, n, \mathrm{maxLevel}-1 )$, and $n$ is the surface normal at $\mathrm{p}$.
 
 **Numerical integration (bonus)**: If `num_samples_diffuse` $>0$, sample many incoming light directions on the hemisphere above $\mathrm{p}$. Add up the diffuse lighting. In other words, replace:
 
-$$\int _ {H^2} f _ d(\mathrm{p}, \omega _ i \rightarrow \omega _ o) \, L _ i(\mathrm{p}, \omega _ i) \, \cos \theta _ i \, \mathrm{d}\omega _ i$$
+$$\int _ {H^2} f _ d(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i(\mathrm{p}, \omega _ i) \cos \theta _ i \ \mathrm{d}\omega _ i$$
 
 with
 
-$$\frac{2\pi}{N} \sum _ {i=1} ^ {N} f _ d \, I(\omega _ i) \, \cos \theta _ i $$
+$$\frac{2\pi}{N} \sum _ {i=1} ^ {N} f _ d I(\omega _ i) \cos \theta _ i $$
 
 where $f _ d = \frac{\mathrm{diffuseColor}}{\pi}$, $I(\omega _ i) = \mathrm{texture}( \mathrm{environment\_map}, \omega _ i )$, $\omega _ i$ is the uniformly sampled direction, $\cos \theta _ i = n \cdot \omega _ i$, and $n$ is the surface normal at $\mathrm{p}$.
 
@@ -331,11 +331,11 @@ Our key observation is that our specular lobe is centered around the reflected v
 
 In summary, we can replace the integral over the specular component of the rendering equation:
 
-$$\int _ {H^2} f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o) \, L _ i(\mathrm{p}, \omega _ i) \, \cos \theta _ i \, \mathrm{d}\omega _ i$$
+$$\int _ {H^2} f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i(\mathrm{p}, \omega _ i) \cos \theta _ i \ \mathrm{d}\omega _ i$$
 
 with a direct lookup:
 
-$$\pi \, \frac{f _ r(\mathrm{p}, l \rightarrow \omega _ o)}{D_{GGX}(\mathrm{p}, l \rightarrow \omega _ o)} \, I(l) \, n \cdot l$$
+$$\pi \frac{f _ r(\mathrm{p}, l \rightarrow \omega _ o)}{D_{GGX}(\mathrm{p}, l \rightarrow \omega _ o)} I(l) \ n \cdot l$$
 
 where $$I(l) = \mathrm{textureLod}( \mathrm{environment\_map}, l, (\mathrm{maxLevel}-1) \cdot \mathrm{perceptualRoughness}^\frac{1}{4}) )$$
 
@@ -345,11 +345,11 @@ where $$I(l) = \mathrm{textureLod}( \mathrm{environment\_map}, l, (\mathrm{maxLe
 
 With this in mind, we replace:
 
-$$\int _ {H^2} f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o) \, L _ i(\mathrm{p}, \omega _ i) \, \cos \theta _ i \, \mathrm{d}\omega _ i$$
+$$\int _ {H^2} f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i(\mathrm{p}, \omega _ i) \cos \theta _ i \ \mathrm{d}\omega _ i$$
 
 with
 
-$$\frac{1}{N} \sum _ {i=1} ^ {N} \frac{f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o)}{p(\omega _ i)} \, I(\omega _ i) \, \cos \theta _ i $$
+$$\frac{1}{N} \sum _ {i=1} ^ {N} \frac{f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o)}{p(\omega _ i)} I(\omega _ i) \cos \theta _ i $$
 
 where $I(\omega _ i) = \mathrm{texture}( \mathrm{environment\_map}, \omega _ i )$, $\omega _ i$ is the non-uniformly sampled direction, $\cos \theta _ i = n \cdot \omega _ i$, and $n$ is the surface normal at $\mathrm{p}$.
 
