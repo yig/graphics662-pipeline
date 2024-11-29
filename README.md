@@ -89,7 +89,7 @@ working. They don't depend on any code you write:
 
         Usage: ./pipeline [--width pixels] [--height pixels] [--screenshot path/to/save.png] [path/to/scene.json]
 
-* ~~Check your work with the [autograder](https://github.com/yig/graphics101-pipeline-autograder).~~ Autograder coming soon.
+* Check your work with the [autograder](https://github.com/yig/graphics662-pipeline-autograder).
 
 * Here are the JSON scene files that will verify your output.
 Save screenshots by pressing the `s` key or by passing `--screenshot output.png` to the executable. Save a screenshot for each of the JSON
