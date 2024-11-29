@@ -474,6 +474,9 @@ void FancyScene::mouseDragEvent( const Event& event ) {
     // and then rotating left and right will be backwards.
     m_camera_rotation.y = glm::clamp( real( m_camera_rotation.y ), real( -pi/2 ), real( pi/2 ) );
     
+    std::cout << "Camera Rotation: [ " << m_camera_rotation.x << ", " << m_camera_rotation.y << " ]\r";
+    std::cout.flush();
+    
     m_mouse_last_pos = mouse_pos;
 }
 void FancyScene::timerEvent( real seconds_since_creation ) {
