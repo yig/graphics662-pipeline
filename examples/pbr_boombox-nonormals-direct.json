@@ -1,6 +1,7 @@
 {
     "PipelineGUI": "FancyScene",
     "TimerMilliseconds": 33,
+    "CameraRotation": [ -0.5, 0.25 ],
     
     "shaders": {
         "vertex": [ "pbr.vs" ],
