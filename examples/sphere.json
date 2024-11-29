@@ -1,6 +1,8 @@
 {
     "PipelineGUI": "FancyScene",
     "TimerMilliseconds": 16,
+    "CameraDistance": 3,
+    "CameraRotation": [ 0, 0 ],
     
     "shaders": {
         "vertex": [ "sphere.vs" ],

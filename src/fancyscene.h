@@ -80,6 +80,7 @@ private:
     bool m_uniforms_changed = true;
     bool m_textures_changed = true;
     bool m_animation_changed = true;
+    vec2 m_camera_rotation_last_load = vec2(0,0);
     StringVec m_texture_names_in_bind_order;
     int m_timerMilliseconds = -1;
     StringSet m_shader_active_attributes;
@@ -91,7 +92,8 @@ private:
     bool m_showSkeleton = true;
     
     // Related to the camera and mouse movement.
-    vec2 m_camera_rotation = vec2(0,0);
+    real m_camera_distance = 3;
+    vec2 m_camera_rotation = m_camera_rotation_last_load;
     vec2 m_mouse_last_pos = vec2(-1,-1);
 };
 

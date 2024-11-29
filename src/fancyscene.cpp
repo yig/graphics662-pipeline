@@ -157,6 +157,34 @@ void FancyScene::loadScene() {
             }
         }
     }
+    
+    m_camera_distance = 3;
+    if( j.count("CameraDistance") ) {
+        if( !j["CameraDistance"].is_number() ) {
+            cerr << "ERROR: CameraDistance is not a number.\n";
+        } else {
+            m_camera_distance = j["CameraDistance"];
+        }
+    }
+    
+    // Don't reset the camera rotation to zero,
+    // in case the user changed it.
+    // Instead, we store the last loaded rotation and check if that changed (see inner if statement).
+    // m_camera_rotation = vec2(0,0);
+    if( j.count("CameraRotation" ) ) {
+        auto rot = j["CameraRotation"];
+        if( rot.size() != 2 ) {
+            cerr << "ERROR: Scene JSON has a CameraRotation without 2 numbers: " << m_scene_path << '\n';
+        } else {
+            // TODO: Check whether they are valid floating point numbers.
+            // Only update the camera rotation if it changed in the scene.
+            const vec2 new_camera_rotation = vec2( rot[0], rot[1] );
+            if( new_camera_rotation != m_camera_rotation_last_load ) {
+                m_camera_rotation = new_camera_rotation;
+                m_camera_rotation_last_load = new_camera_rotation;
+            }
+        }
+    }
 }
 
 void FancyScene::loadShaders() {
@@ -400,7 +428,7 @@ void FancyScene::setCameraUniforms() {
     // Update camera.
     setPerspectiveMatrix();
     
-    const mat4 view = Camera::orbiting_world_to_camera( 3, m_camera_rotation[0], m_camera_rotation[1] );
+    const mat4 view = Camera::orbiting_world_to_camera( m_camera_distance, m_camera_rotation[0], m_camera_rotation[1] );
     m_drawable->uniforms.storeUniform( "uViewMatrix", view );
     // Because view is just a rotation, the normal matrix is the same.
     // m_drawable->uniforms.storeUniform( "uNormalMatrix", glm::inverse( glm::transpose( mat3(view) ) ) );
