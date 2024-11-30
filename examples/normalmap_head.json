@@ -12,7 +12,7 @@
     "mesh": "head/head.obj",
     
     "textures": {
-        "skin": "head/lambertian.jpg",
+        "skin": "head/lambertian1k.jpg",
         "normals": "head/normal-lowRes.png",
         "grid": "uv_grid.png",
         "yokohama": [
