@@ -507,6 +507,8 @@ normal via `2*color-1`.
     
 * For a video explanation of normal mapping, see [this YouTube video](https://www.youtube.com/watch?v=yHzIx41eiD4).
 
+* When debugging, you can use the normal map texture `normalmap_noop.png`, which is a no-op normal map containing the color (0.5,0.5,1.0). It should look unchanged with or without `material.use_normal_map`.
+
 ## 4. Create a time-varying artistic shader of your own design (bonus 10 points)
 
 Be creative! Make use of the uniform `uTime`, which stores the seconds
