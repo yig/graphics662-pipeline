@@ -265,7 +265,9 @@ With an environment map, there's no getting around evaluating the integral *some
 
 **Diffuse lighting**. Recall that the diffuse component of the BRDF scatters incoming light equally in all directions. For a given point on the surface, we want to take in light from all visible directions (the hemisphere aligned with the point's normal) and project it with the cosine term. In other words, we are accumulating all visible light from the normal direction. This is the same as taking an average of all the visible light and multiplying by the area of integration ($\pi$ for the unit circle we project onto). To be accurate, we should take a cosine-weighted average, but an unweighted average will be a close approximation and easy to implement with [mipmaps](https://en.wikipedia.org/wiki/Mipmap).
 
-The mipmaps of a texture are its image pyramid: the sequence of images obtained by shrinking the width and height by a factor of two each time. A $1024 \times 1024$ texture will have mipmap levels $512 \times 512$, $256 \times 256$, and so on down to $1 \times 1$. Level 0 is the original texture. The maximum mipmap level is (in GLSL) `1 + floor(log2(textureSize(tex,0).x))`. The C++ framework we are using automatically generates mipmaps for all loaded textures. (In OpenGL, it's as easy as calling `glGenerateMipmap()`.) When fetching values from a texture in GLSL, we can use `textureLod( tex, uv, level )` to sample the texture `tex` with texture coordinates `uv` at the given `level`.
+The mipmaps of a texture are its image pyramid: the sequence of images obtained by shrinking the width and height by a factor of two each time. A $1024 \times 1024$ texture will have mipmap levels $512 \times 512$, $256 \times 256$, and so on down to $1 \times 1$. Level 0 is the original texture. The maximum mipmap level is (in GLSL) `1 + floor(log2(textureSize(tex,0).x))`. Our C++ framework automatically generates mipmaps for all loaded textures. (In OpenGL, it's as easy as calling `glGenerateMipmap()`.) When fetching values from a texture in GLSL, we can use `textureLod( tex, uv, level )` to sample the texture `tex` with texture coordinates `uv` at the given `level`.
+
+> 🙅: Calling `texture( tex, uv )` will automatically pick a mipmap level, but that's not appropriate for our needs, since the automatic level is chosen based on using the texture sample directly as the pixel color, rather than indirectly as we are doing.
 
 With our mipmap approximation, we can replace the integral over the diffuse component of the rendering equation:
 
@@ -285,7 +287,7 @@ with
 
 $$\frac{2\pi}{N} \sum _ {i=1} ^ {N} f _ d I(\omega _ i) \cos \theta _ i $$
 
-where $f _ d = \frac{\mathrm{diffuseColor}}{\pi}$, $I(\omega _ i) = \mathrm{texture}( \mathrm{environment\_map}, \omega _ i )$, $\omega _ i$ is the uniformly sampled direction, $\cos \theta _ i = n \cdot \omega _ i$, and $n$ is the surface normal at $\mathrm{p}$.
+where $f _ d = \frac{\mathrm{diffuseColor}}{\pi}$, $I(\omega _ i) = \mathrm{textureLod}( \mathrm{environment\_map}, \omega _ i, 0 )$, $\omega _ i$ is the uniformly sampled direction, $\cos \theta _ i = n \cdot \omega _ i$, and $n$ is the surface normal at $\mathrm{p}$.
 
 To get a uniformly sampled normal on the hemisphere, you could use a Fibonacci lattice [[1]](https://stackoverflow.com/questions/9600801/evenly-distributing-n-points-on-a-sphere) [[2]](https://extremelearning.com.au/how-to-evenly-distribute-points-on-a-sphere-more-effectively-than-the-canonical-fibonacci-lattice/). However, we will instead use a more general approach that will also serve us when numerically integrating specular reflection.
 
@@ -351,7 +353,7 @@ with
 
 $$\frac{1}{N} \sum _ {i=1} ^ {N} \frac{f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o)}{p(\omega _ i)} I(\omega _ i) \cos \theta _ i $$
 
-where $I(\omega _ i) = \mathrm{texture}( \mathrm{environment\_map}, \omega _ i )$, $\omega _ i$ is the non-uniformly sampled direction, $\cos \theta _ i = n \cdot \omega _ i$, and $n$ is the surface normal at $\mathrm{p}$.
+where $I(\omega _ i) = \mathrm{textureLod}( \mathrm{environment\_map}, \omega _ i, 0 )$, $\omega _ i$ is the non-uniformly sampled direction, $\cos \theta _ i = n \cdot \omega _ i$, and $n$ is the surface normal at $\mathrm{p}$.
 
 The [right non-uniform sampling strategy to use](https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_2_eng_web.html#11) is based on our microfacet distribution $D _ {GGX}$. We want to sample points around the peak of our specular lobe. The peak is centered around the reflection of the view vector across the normal. However, we don't want to generate samples "around" that reflected direction, because many of them won't be valid (outside the hemisphere) which causes problems for our probability density function $p$. Instead, we generate samples centered around the normal vector (like with diffuse reflection but following a different distribution). We interpret these samples as halfway vectors $h$ between the view $v$ and unknown light direction $l$ we ultimately wish to sample. Formally, $h = \frac{v+l}{\|v+l\|}$. We can obtain the light direction by reflecting the view direction across the halway vector: $l = \mathrm{reflect(-v,h)}$.
 
