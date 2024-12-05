@@ -466,7 +466,9 @@ void FancyScene::mouseDragEvent( const Event& event ) {
 
     const auto mouse_pos = vec2( event.x, event.y );
     auto diff = mouse_pos - m_mouse_last_pos;
-    diff *= pi / glm::min( width_and_height[0], width_and_height[1] );
+    // Avoid a windows.h macro with parentheses.
+    // Source: <https://stackoverflow.com/questions/5004858/why-is-stdmin-failing-when-windows-h-is-included/22023122#22023122>
+    diff *= pi / (glm::min)( width_and_height[0], width_and_height[1] );
     
     m_camera_rotation += diff;
     // Don't rotate past the north or south pole,
