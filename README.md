@@ -127,7 +127,6 @@ helping you (not by giving your their code!).
 
 * When done, run `cmake --build build-dir --target zip`
 to generate an appropriate zip file of your `pipeline` project.
-(Running the `cpack` command from inside your build directory may accomplish the same thing, but won't re-generate screenshots.)
 The zip file it creates, `pipeline.zip`, will include
 the `screenshots` subdirectory and your `Notes.txt` file.
 It will ignore unneeded large and numerous directories
