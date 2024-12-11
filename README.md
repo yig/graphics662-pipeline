@@ -515,8 +515,8 @@ normal via `2*color-1`.
 
 Be creative! Make use of the uniform `uTime`, which stores the seconds
 since the program was launched. Declare it in your shader as `uniform float uTime;`
-Be sure to change `TimerMilliseconds` in the scene JSON file to something like 16
-(which corresponds to 60 frames-per-second). See `sphere.vs` for an example.
+Be sure to set `TimerMilliseconds` in the scene JSON file to a non-negative number (16 corresponds to 60 frames-per-second).
+See `sphere.json` for an example.
 
 ## 5. Additional bonus points (variable)
 
