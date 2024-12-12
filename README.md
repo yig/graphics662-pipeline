@@ -370,9 +370,9 @@ Again, these points are distributed on the hemisphere aligned with $(0,0,1)$. Ro
 
 The probability density function [is](https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_2_eng_web.html#14): $$p(\omega _ i) = \frac{D _ {GGX} \cos( \theta )}{4 ( v \cdot h)}$$
 
-where $v$ is the view vector and $h$.
+where $v$ is the view vector.
 
-> Careful observers may wonder about the missing $\sin(\theta)$ term in $p(\omega _ i)$. The $\sin(\theta)$ term appears when integrating in spherical coordinates, but we have been writing our integrals directly in steradians. Drop the $\sin(\theta)$ term from [all of the probability density functions](https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_2_eng_web.html#11). You can see it and the appearance of the $4 ( v \cdot h)$ denominator by following the change of variables derivation on [these slides](https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_2_eng_web.html#32).
+> Careful observers may wonder about the missing $\sin(\theta)$ term in $p(\omega _ i)$. The $\sin(\theta)$ term appears when integrating in spherical coordinates, but we have been writing our integrals directly in steradians. Drop the $\sin(\theta)$ term from [all of the probability density functions](https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_2_eng_web.html#11). You can see it and the appearance of the $4 ( v \cdot h)$ denominator by following the change of variables derivation on [these slides](https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_2_eng_web.html#32) or in Sections 3.1 and 3.2 of [this technical report](https://www.graphics.cornell.edu/~bjw/wardnotes.pdf) or in the [Physically Based Rendering book](https://pbr-book.org/4ed/Reflection_Models/Roughness_Using_Microfacet_Theory#x5-TheHalf-DirectionTransform).
 
 #### 1.1 Upload data to the GPU (`vao.cpp`) (10 points)
 
