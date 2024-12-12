@@ -329,7 +329,7 @@ Note that these points will be distributed on the hemisphere aligned with $(0,0,
 
 **Specular lighting**. Specular lighting depends on both the normal and view direction, but further appromixations make precomputation possible. The approximation used in the Unreal Engine and Filament is the split-sum approximation [[1]](https://cdn2.unrealengine.com/Resources/files/2013SiggraphPresentationsNotes-26915738.pdf) [[2]](https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_2_eng_web.html#38)). We will use a simpler approximation, again based on mipmaps.
 
-Our key observation is that our specular lobe is centered around the reflected view direction $l = \mathrm{reflect}( -v, n )$. (`reflect()` is a GLSL function.) In other words, light coming from $l$ has the least attenuation (highest influence). The amount of attenuation is based on the angle with respect to $l$ *and* the roughness parameter. Surfaces with roughness $= 1.0$ exhibit diffuse-like scattering. Integrating over the lobe is again like taking a weighted average over all light directions and multiplying by the area of integration ($\pi$ for the unit circle we project onto). In the case of specular reflection, we can approximate the weighted average by sampling the cube map once in the $l$ direction with a mipmap level somewhere between 0 and the maximum level. We have one more modification to make for energy conservation. The $D _ {GGX}$ term in the BRDF's specular component $f _ r$ is what determines the shape of the specular lobe. It distributes the specular energy. (The integral of $D _ {GGX} \cos \theta$ over the hemisphere sums to 1, which is what gives us our energy conservation.) Since we are only sampling it once, we need to cancel this term by dividing by it.
+Our key observation is that our specular lobe is centered around the reflected view direction $l = \mathrm{reflect}( -v, n )$. (`reflect()` is a GLSL function.) In other words, light coming from $l$ has the least attenuation (highest influence). The amount of attenuation is based on the angle with respect to $l$ *and* the roughness parameter. Surfaces with roughness $= 1.0$ exhibit diffuse-like scattering. Integrating over the lobe is again like taking a weighted average over all light directions and multiplying by the area of integration ($\pi$ for the unit circle we project onto). In the case of specular reflection, we can approximate the weighted average by sampling the cube map once in the $l$ direction with a mipmap level somewhere between 0 and the maximum level. We have one more modification to make. We need to divide by the probability $p(l)$ of light coming from this direction. (See the bonus numerical integration section for pointers to derivations of this probability.)
 
 In summary, we can replace the integral over the specular component of the rendering equation:
 
@@ -337,9 +337,11 @@ $$\int _ {H^2} f _ r(\mathrm{p}, \omega _ i \rightarrow \omega _ o) L _ i(\mathr
 
 with a direct lookup:
 
-$$\pi \frac{f _ r(\mathrm{p}, l \rightarrow \omega _ o)}{D_{GGX}(\mathrm{p}, l \rightarrow \omega _ o)} I(l) \ n \cdot l$$
+$$\frac{f _ r(\mathrm{p}, l \rightarrow \omega _ o)}{p(l)} I(l) \ n \cdot l$$
 
-where $$I(l) = \mathrm{textureLod}( \mathrm{environment\_map}, l, (\mathrm{maxLevel}-1) \cdot \mathrm{perceptualRoughness}^\frac{1}{4}) )$$
+where
+$p(l) = \frac{D _ {GGX}}{4 ( v \cdot n)}$,
+$I(l) = \mathrm{textureLod}( \mathrm{environment\_map}, l, (\mathrm{maxLevel}-1) \cdot \mathrm{perceptualRoughness}^\frac{1}{4})$.
 
 > I chose that power of `perceptualRoughness` by eye-balling the results compared to numerical integration.
 
