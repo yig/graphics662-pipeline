@@ -28,8 +28,8 @@
         "material.use_occlusion_map": { "type": "1i", "value": 0 },
         "material.occlusion_map": { "type": "texture", "value": "normal" },
         
-        "num_samples_diffuse": { "type": "1i", "value": 200 },
-        "num_samples_specular": { "type": "1i", "value": 200 },
+        "num_samples_diffuse": { "type": "1i", "value": 0 },
+        "num_samples_specular": { "type": "1i", "value": 0 },
         
         "environment_map": { "type": "texture", "value": "hotel" },
         "use_environment_map": { "type": "1i", "value": 1 },
