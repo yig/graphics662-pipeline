@@ -41,7 +41,8 @@ void Mesh::computeTangentBitangent() {
     // Compute the face normal.
     // Compute the known tangent-to-world examples from the triangle edges.
     // Solve for the tangent frame matrix.
-    // Average the first column (tangent) and second column (bitangent).
+    // Average the first column (tangent) by adding them all together and normalizing.
+    // Average the second column (bitangent) the same way.
     
     
     // Normalize all vectors.
