@@ -428,7 +428,7 @@ Implement the physically-based rendering approach described above. After some in
 6. Add the specular component of the image-based lighting. (10/25 points)
 7. Set the output fragment color `FragColor = vec4( clamp( color, 0.0, 1.0 ), 1.0 );`
 
-## 2. MatCaps with object-space normal mapping (20 points + bonus 3 points)
+## 2. MatCaps with object-space normal mapping (20 points + bonus 5 points)
 
 You only need to write a fragment shader `matcap.fs`,
 since the same vertex shader as the one you wrote for PBR shading `pbr.vs` can be re-used.
