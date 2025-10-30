@@ -32,9 +32,9 @@ FetchContent_MakeAvailable( glfw3 )
 FetchContent_Declare(
     glm
     # GIT_REPOSITORY https://github.com/g-truc/glm.git
-    # GIT_TAG 1.0.1
-    URL https://github.com/g-truc/glm/archive/refs/tags/1.0.1.zip
-    URL_HASH SHA256=09c5716296787e1f7fcb87b1cbdbf26814ec1288ed6259ccd30d5d9795809fa5
+    # GIT_TAG 1.0.2
+    URL https://github.com/g-truc/glm/archive/refs/tags/1.0.2.zip
+    URL_HASH SHA256=be64032585415ca7dbea0d614915bb8eec012adf7b4d4fea7ff6b5bd3e0b906a
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     )
